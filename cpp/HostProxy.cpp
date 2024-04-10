@@ -6,7 +6,7 @@
 
 namespace qjs {
 
-JSClassID HostObjectProxy::kJSClassID = 0;
+JSClassID HostObjectProxy::kJSClassID = 0;  //JSClass定义于quickjs.h，类型为unit32_t（kJSClassID属性也为自定义）
 
 JSClassDef HostObjectProxy::kJSClassDef = {
     .class_name = "HostObjectProxy",
@@ -24,7 +24,7 @@ void *OpaqueData::GetHostData(JSValueConst this_val) {
   return nullptr;
 }
 
-const JSCFunctionListEntry HostObjectProxy::kTemplateInterceptor[] = {
+const JSCFunctionListEntry HostObjectProxy::kTemplateInterceptor[] = {  //在函数表中添加HostObjectProxy相关函数
     JS_CINTERCEPTOR_DEF(
         "HostObjectProxyInterceptor",
         &HostObjectProxy::Getter,
@@ -34,18 +34,18 @@ const JSCFunctionListEntry HostObjectProxy::kTemplateInterceptor[] = {
         &HostObjectProxy::Enumerator),
 };
 
-HostObjectProxy::HostObjectProxy(
+HostObjectProxy::HostObjectProxy(  //HostObjectProxy的构造函数（本项目中没有）
     QuickJSRuntime &runtime,
     std::shared_ptr<jsi::HostObject> hostObject)
     : runtime_(runtime), hostObject_(hostObject) {
   opaqueData_.hostData_ = this;
 }
 
-std::shared_ptr<jsi::HostObject> HostObjectProxy::GetHostObject() {
+std::shared_ptr<jsi::HostObject> HostObjectProxy::GetHostObject() {  //得到hostObject
   return hostObject_;
 }
 
-OpaqueData *HostObjectProxy::GetOpaqueData() {
+OpaqueData *HostObjectProxy::GetOpaqueData() {    //返回本对象指针
   return &opaqueData_;
 }
 
